@@ -11,7 +11,6 @@ set title " Show file title
 set wildmenu " Show a more advance menu
 filetype plugin indent on   " Allow auto-indenting depending on file type
 syntax on
-set spell " enable spell check (may need to download language package)
 set ttyfast " Speed up scrolling in Vim
 
 call plug#begin('~/.config/nvim/plugged')
@@ -23,7 +22,6 @@ Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'sheerun/vim-polyglot'
 Plug 'jiangmiao/auto-pairs'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tpope/vim-fugitive'
 Plug 'github/copilot.vim'
 call plug#end()
