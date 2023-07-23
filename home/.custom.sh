@@ -27,6 +27,3 @@ function gpp {
  git commit -m $2
  git push origin $(git symbolic-ref --short HEAD)
 }
-
-# prompt
-eval "$(starship init zsh)"

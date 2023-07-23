@@ -1,6 +1,6 @@
 #!/bin/bash
 sysname=$(uname -s)
-packages="bpytop tmux alacritty wget tree neofetch htop ripgrep ncdu speedtest-cli make cmake tmux"
+packages="bpytop tmux wget tree neofetch htop ripgrep ncdu speedtest-cli make cmake tmux"
 customsh="~/.custom.sh"
 zshrcfile="~/.zshrc"
 
@@ -40,4 +40,4 @@ fi
 curl -sS https://starship.rs/install.sh | sh
 
 # applying custom config files
-yes | cp -rf ~/dotfiles/home/* ~/
+yes | cp -rf ~/dotfiles/home/ ~/
