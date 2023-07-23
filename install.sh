@@ -1,6 +1,8 @@
 #!/bin/bash
 sysname=$(uname -s)
 packages="bpytop tmux alacritty wget tree neofetch htop ripgrep ncdu speedtest-cli make cmake tmux"
+customsh="~/.custom.sh"
+zshrcfile="~/.zshrc"
 
 if [[ "$sysname" == "Darwin" ]]; then
   if command -v brew &>/dev/null; then
@@ -13,16 +15,12 @@ if [[ "$sysname" == "Darwin" ]]; then
   # installing brew packages
   brew install $packages
 
-  # custom commands
-  echo "source ~/.custom.sh" >> ~/.zshrc
 else
   # installing ubuntu packages
   sudo apt-get update && sudo apt-get upgrade
   sudo apt-get install -y $packages
-  sudo apt-get install -y nvtop
-
-  # custom commands
-  echo "source ~/.custom.sh" >> ~/.bashrc
+  sudo apt-get install -y nvtop zsh
+  chsh -s $(which zsh)
 fi
 
 # installing neovim from source
@@ -42,4 +40,4 @@ fi
 curl -sS https://starship.rs/install.sh | sh
 
 # applying custom config files
-mv ~/dotfiles/home/* ~/.
+yes | cp -rf ~/dotfiles/home/* ~/
