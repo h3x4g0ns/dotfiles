@@ -23,7 +23,7 @@ alias gaa="git add --all"
 
 # custom functions
 function gpp {
- git add $1 
- git commit -m $2
- git push origin $(git symbolic-ref --short HEAD)
+  git add $1 
+  git commit -m $2
+  git push origin $(git symbolic-ref --short HEAD)
 }
