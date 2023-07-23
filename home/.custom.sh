@@ -5,11 +5,12 @@ export PATH="/opt/homebrew/opt/cython/bin:$PATH"
  
 # alias
 alias vim="nvim"
-alias change="nvim ~/.custom.sh"
+alias change="cd ~/dotfiles && nvim"
 alias update="source ~/.zshrc"
 alias ic='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
 alias cs="cd ~/Documents/code"
 alias lspconfig="nvim ~/.config/nvim/lua/custom/configs/lspconfig.lua"
+alias config="cd ~/dotfiles && sh install.sh"
 
 # git
 alias gs="git status"
