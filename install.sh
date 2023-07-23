@@ -41,3 +41,5 @@ curl -sS https://starship.rs/install.sh | sh
 
 # applying custom config files
 yes | cp -rf ~/dotfiles/home/ ~/
+mkdir -p ~/.config
+yes | cp -rf ~/dotfiles/config/ ~/.config/

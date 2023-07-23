@@ -1,7 +1,6 @@
 # environment variables
 export PYTHON_UTILS="$PYTHONUTILS:"
 export PATH="$PYTHON_UTILS:$PATH"
-export STARSHIP_CONFIG=~/starship.toml
 export PATH="/opt/homebrew/opt/cython/bin:$PATH"
  
 # alias

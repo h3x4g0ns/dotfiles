@@ -14,4 +14,3 @@ source ~/.zshrc
 ## v1
 
 ![img](imgs/v1.png)
-
