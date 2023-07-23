@@ -1,6 +1,6 @@
 #!/bin/bash
 sysname=$(uname -s)
-packages="bpytop tmux wget tree neofetch htop ripgrep ncdu speedtest-cli make cmake tmux"
+packages="bpytop tmux wget tree neofetch htop ripgrep ncdu speedtest-cli make cmake tmux nodejs npm"
 customsh="~/.custom.sh"
 zshrcfile="~/.zshrc"
 
