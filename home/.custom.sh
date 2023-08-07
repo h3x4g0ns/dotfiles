@@ -27,3 +27,13 @@ function gpp {
   git commit -m $2
   git push origin $(git symbolic-ref --short HEAD)
 }
+
+function switchbranch {
+  git stash
+  git pull origin $(git symbolic-ref --short HEAD)
+  git branch $1
+  git switch $1
+}
+
+# starship
+eval "$(starship init zsh)"
