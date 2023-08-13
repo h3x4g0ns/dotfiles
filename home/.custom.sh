@@ -21,6 +21,9 @@ alias gpl="git pull"
 alias ga="git add"
 alias gaa="git add --all"
 
+# prompt
+eval "$(starship init zsh)"
+
 # custom functions
 function gpp {
   git add $1 
