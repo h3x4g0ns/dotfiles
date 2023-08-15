@@ -12,18 +12,18 @@ if [[ "$sysname" == "Darwin" ]]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 
-  # installing brew packages
+  # brew packages
   brew install $packages
 
 else
-  # installing ubuntu packages
+  # ubuntu packages
   sudo apt-get update && sudo apt-get upgrade
   sudo apt-get install -y $packages
   sudo apt-get install -y nvtop zsh
   chsh -s $(which zsh)
 fi
 
-# installing neovim from source
+# neovim from source
 if command -v nvim &>/dev/null; then
   echo "Neovim is installed."
 else
@@ -36,10 +36,13 @@ else
   git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
 fi
 
-# installing starship prompt
+# starship prompt
 curl -sS https://starship.rs/install.sh | sh
 
-# applying custom config files
+# zsh syntax highlighting
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
+
+# custom config files
 yes | cp -rf ~/dotfiles/home/ ~/
 mkdir -p ~/.config
 yes | cp -rf ~/dotfiles/config/ ~/.config/
