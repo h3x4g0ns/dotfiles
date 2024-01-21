@@ -40,6 +40,7 @@ fi
 curl -sS https://starship.rs/install.sh | sh
 
 # zsh syntax highlighting
+rm -rf ~/.zsh/zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
 
 # custom config files
