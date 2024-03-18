@@ -24,8 +24,9 @@ alias gpl="git pull"
 alias ga="git add"
 alias gaa="git add --all"
 alias gst="git stash"
+alias gsw="git switch"
 
-# scripts
+# scripts 
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # custom functions

@@ -43,6 +43,10 @@ curl -sS https://starship.rs/install.sh | sh
 rm -rf ~/.zsh/zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
 
+# fuzzy finder
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
+
 # custom config files
 yes | cp -rf ~/dotfiles/home/ ~/
 mkdir -p ~/.config
