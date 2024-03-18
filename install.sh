@@ -44,8 +44,12 @@ rm -rf ~/.zsh/zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
 
 # fuzzy finder
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
+if command -v fzf &>/dev/null; then
+  echo "Fzf is installed."
+else
+  echo "Fzf is not installed."
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install
 
 # custom config files
 yes | cp -rf ~/dotfiles/home/ ~/
