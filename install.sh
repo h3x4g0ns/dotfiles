@@ -51,6 +51,12 @@ else
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install
 
+# lazygit
+git clone https://github.com/jesseduffield/lazygit.git
+cd lazygit
+go install
+cd ~
+
 # custom config files
 yes | cp -rf ~/dotfiles/home/ ~/
 mkdir -p ~/.config
