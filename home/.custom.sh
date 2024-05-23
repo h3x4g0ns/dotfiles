@@ -13,6 +13,7 @@ alias cs="cd ~/Documents/code"
 alias lspconfig="nvim ~/.config/nvim/lua/custom/configs/lspconfig.lua"
 alias config="cd ~/dotfiles && sh install.sh"
 alias journal="cd '/Users/hexagon/Library/Mobile Documents/iCloud~md~obsidian/Documents/hexagon/journal' && nvim"
+alias lg="lazygit"
 
 # git
 alias gs="git status"
