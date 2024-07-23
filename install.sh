@@ -57,6 +57,9 @@ cd lazygit
 go install
 cd ~
 
+# zoxide
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+
 # custom config files
 yes | cp -rf ~/dotfiles/home/ ~/
 mkdir -p ~/.config
