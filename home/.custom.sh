@@ -26,6 +26,7 @@ alias ga="git add"
 alias gaa="git add --all"
 alias gst="git stash"
 alias gsw="git switch"
+alias gcb="git checkout -b"
 
 # scripts 
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
