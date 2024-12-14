@@ -67,3 +67,5 @@ ln -s $(pwd)/dotfiles/home/.custom.sh $(pwd)/.custom.sh
 ln -s $(pwd)/dotfiles/home/.history.sh $(pwd)/.history.sh
 ln -s $(pwd)/dotfiles/home/.alacritty.toml $(pwd)/.alacritty.toml
 
+# user binaries
+mkdir ~/.local/bin

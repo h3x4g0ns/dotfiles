@@ -1,4 +1,5 @@
 # alias
+export PATH="$PATH:$HOME/.local/bin"
 alias change="nvim ~/.zshrc"
 alias update="source ~/.zshrc"
 alias lspconfig="nvim ~/.config/nvim/lua/configs/lspconfig.lua"
