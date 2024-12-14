@@ -1,4 +1,0 @@
-# ~/.config/starship.toml
-[python]
-python_binary = ["python3", "python"]
-

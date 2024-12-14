@@ -1,27 +1,12 @@
-#!/bin/bash
-sysname=$(uname -s)
-packages="bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake tmux nodejs npm"
-customsh="~/.custom.sh"
-zshrcfile="~/.zshrc"
+#!/bin/bash -e
 
-if [[ "$sysname" == "Darwin" ]]; then
-  if command -v brew &>/dev/null; then
-    echo "Homebrew is installed."
-  else
-    echo "Homebrew is not installed."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  fi
+SYSNAME=$(uname -s)
+PACKAGES="bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake tmux nodejs npm"
 
-  # brew packages
-  brew install $packages
-
-else
-  # ubuntu packages
-  sudo apt-get update && sudo apt-get upgrade
-  sudo apt-get install -y $packages
-  sudo apt-get install -y nvtop zsh
-  chsh -s $(which zsh)
-fi
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-get install -y $PACKAGES
+sudo apt-get install -y nvtop zsh
+chsh -s $(which zsh)
 
 # neovim from source
 if command -v nvim &>/dev/null; then
@@ -37,30 +22,46 @@ else
 fi
 
 # starship prompt
-curl -sS https://starship.rs/install.sh | sh
+if command -v starship &>/dev/null; then
+  echo "starship is installed."
+else
+  curl -sS https://starship.rs/install.sh | sh
+fi
 
 # zsh syntax highlighting
-rm -rf ~/.zsh/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/zsh-syntax-highlighting
+ZSH_SYNTAX_FILE=~/.zsh/zsh-syntax-highlighting
+if [ -f "$ZSH_SYNTAX_FILE" ]; then
+  echo "zsh syntax is installed"
+else
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_SYNTAX_FILE 
+fi
 
 # fuzzy finder
 if command -v fzf &>/dev/null; then
-  echo "Fzf is installed."
+  echo "fzf is installed."
 else
-  echo "Fzf is not installed."
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install
+fi
 
 # lazygit
-git clone https://github.com/jesseduffield/lazygit.git
-cd lazygit
-go install
-cd ~
+if command -v lazygit &>/dev/null; then
+  echo "lazygit is installed."
+else
+  cd ~/Code
+  git clone https://github.com/jesseduffield/lazygit.git
+  cd lazygit
+  go install
+fi
 
 # zoxide
-curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+if command -v z &>/dev/null; then
+  echo "zoxide is installed."
+else
+  curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+fi
 
-# custom config files
-yes | cp -rf ~/dotfiles/home/ ~/
-mkdir -p ~/.config
-yes | cp -rf ~/dotfiles/config/ ~/.config/
+# symlinks
+cd -
+ln -s $(pwd)/dotfiles/home/.custom.sh $(pwd)/.custom.sh
+ln -s $(pwd)/dotfiles/home/.history.sh $(pwd)/.history.sh

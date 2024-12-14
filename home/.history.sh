@@ -1,0 +1,12 @@
+HISTFILE=~/.zsh_history
+
+# Number of lines to keep in the history file
+HISTSIZE=10000
+SAVEHIST=10000
+setopt SHARE_HISTORY
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS
+setopt HIST_IGNORE_ALL_DUPS
