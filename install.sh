@@ -46,7 +46,7 @@ else
 fi
 
 # go
-if command -v go >/dev/null 2>&1: then
+if command -v go >/dev/null 2>&1; then
   echo "go is installed"
 else
   wget -q -O - https://git.io/vQhTU | bash
@@ -57,10 +57,10 @@ LG=~/.local/src/lazygit
 if command -v lazygit >/dev/null 2>&1; then
   echo "lazygit is installed."
 else
-  mkdir -p $LG 
-  git clone https://github.com/jesseduffield/lazygit.git $LG 
-  cd $LG 
-  go install
+  LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+  curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+  tar xf lazygit.tar.gz lazygit
+  sudo install lazygit -D -t /usr/local/bin/
 fi
 
 # zoxide
