@@ -4,6 +4,7 @@
 git clone https://github.com/h3x4g0ns/dotfiles.git
 cd dotfiles && sh install.sh
 echo "source ~/.custom.sh" >> ~/.zshrc
+echo "source ~/.history.sh" >> ~/.zshrc
 source ~/.zshrc
 ```
 

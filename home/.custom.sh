@@ -2,7 +2,7 @@
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/bin/nvim-linux64/bin"
 
-# alias
+# alia
 alias change="nvim ~/.zshrc"
 alias update="source ~/.zshrc"
 alias lspconfig="nvim ~/.config/nvim/lua/configs/lspconfig.lua"
@@ -28,7 +28,7 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # custom functions
 function gpp {
-  git add -$1
+  git add $1
   git commit -m $2
   git push origin $(git symbolic-ref --short HEAD)
 }
