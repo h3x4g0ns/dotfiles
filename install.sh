@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 SYSNAME=$(uname -s)
-PACKAGES="zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake tmux nodejs npm fastfetch"
+PACKAGES="zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake tmux nodejs npm fastfetch bat"
 
 sudo add-apt-repository ppa:zhangsongcui3371/fastfetch
 sudo apt-get update && sudo apt-get upgrade -y
