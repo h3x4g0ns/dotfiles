@@ -8,6 +8,7 @@ alias update="source ~/.zshrc"
 alias lspconfig="nvim ~/.config/nvim/lua/configs/lspconfig.lua"
 alias lg="lazygit"
 alias ff="fastfetch"
+alias bat="batcat"
 
 # git
 alias gs="git status"
