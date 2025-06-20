@@ -1,9 +1,10 @@
 #!/bin/bash -e
 
 SYSNAME=$(uname -s)
-PACKAGES="zsh nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake tmux nodejs npm"
+PACKAGES="zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake tmux nodejs npm fastfetch"
 
-sudo apt-get update && sudo apt-get upgrade
+sudo add-apt-repository ppa:zhangsongcui3371/fastfetch
+sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install -y $PACKAGES
 
 # user binaries
@@ -15,9 +16,9 @@ if command -v nvimbo >/dev/null 2>&1; then
   echo "Neovim is installed."
 else
   cd ~/.local/src
-  curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+  curl -LO https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-x86_64.tar.gz
   sudo rm -rf ~/.local/bin/nvim
-  sudo tar -C ~/.local/bin -xzf nvim-linux64.tar.gz
+  sudo tar -C ~/.local/bin -xzf nvim-linux-x86_64.tar.gz
   sudo chown -R $USER ~/.local/bin
 fi
 
@@ -72,7 +73,7 @@ else
 fi
 
 # symlinks
-cd -
+cd ~
 ln -s $(pwd)/dotfiles/home/.custom.sh $(pwd)/.custom.sh
 ln -s $(pwd)/dotfiles/home/.history.sh $(pwd)/.history.sh
 ln -s $(pwd)/dotfiles/home/.alacritty.toml $(pwd)/.alacritty.toml

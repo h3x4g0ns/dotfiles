@@ -1,0 +1,1 @@
+/home/hexagon/dotfiles/dotfiles/home/.custom.sh

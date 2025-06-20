@@ -1,6 +1,6 @@
 # globals 
 export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:$HOME/.local/bin/nvim-linux64/bin"
+export PATH="$PATH:$HOME/.local/bin/nvim-linux-x86_64/bin"
 
 # alia
 alias change="nvim ~/.zshrc"

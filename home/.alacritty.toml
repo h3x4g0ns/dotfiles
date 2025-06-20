@@ -1,6 +1,6 @@
 [font.normal]
 family = "Hack Nerd Font"
-style = "Bold"
+style = "Regular"
 
 [font.bold]
 family = "Hack Nerd Font"
@@ -19,7 +19,3 @@ size = 12
 
 [window]
 decorations = "buttonless"
-
-[padding]
-x = 10
-y = 10
