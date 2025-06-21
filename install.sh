@@ -78,4 +78,4 @@ ln -s $(pwd)/dotfiles/home/.custom.sh $(pwd)/.custom.sh
 ln -s $(pwd)/dotfiles/home/.history.sh $(pwd)/.history.sh
 ln -s $(pwd)/dotfiles/home/.alacritty.toml $(pwd)/.alacritty.toml
 ln -s $(pwd)/dotfiles/home/.tmux.conf $(pwd)/.tmux.conf
-
+ln -s $(pwd)/dotfiles/home/all_red.theme $(pwd)/.config/bpytop/themes/all_red.theme
