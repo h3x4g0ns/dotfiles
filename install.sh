@@ -31,11 +31,11 @@ else
 fi
 
 # zsh syntax highlighting
-ZSH_SYNTAX_FILE=~/.zsh/zsh-syntax-highlighting
+ZSH_SYNTAX_FILE=~/.zsh/fast-syntax-highlighting.zsh
 if [ -f "$ZSH_SYNTAX_FILE" ]; then
   echo "zsh syntax is installed"
 else
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_SYNTAX_FILE 
+  git clone https://github.com/zdharma-continuum/fast-syntax-highlighting $ZSH_SYNTAX_FILE 
 fi
 
 # fuzzy finder
