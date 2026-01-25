@@ -1,6 +1,9 @@
 # globals 
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.local/bin/nvim-linux-x86_64/bin"
+export ANTHROPIC_AUTH_TOKEN=ollama
+export ANTHROPIC_API_KEY=""
+export ANTHROPIC_BASE_URL=http://stark02:11434
 
 # alia
 alias change="nvim ~/.zshrc"
