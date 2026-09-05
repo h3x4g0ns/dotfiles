@@ -1,6 +1,8 @@
 # globals 
-export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:$HOME/.local/bin/nvim-linux-x86_64/bin"
+export PATH="$HOME/.local/bin:$PATH"
+if [ -d "$HOME/.local/bin/nvim-linux-x86_64/bin" ]; then
+  export PATH="$HOME/.local/bin/nvim-linux-x86_64/bin:$PATH"
+fi
 export ANTHROPIC_AUTH_TOKEN=ollama
 export ANTHROPIC_API_KEY=""
 export ANTHROPIC_BASE_URL=http://stark02:11434
@@ -11,7 +13,9 @@ alias update="source ~/.zshrc"
 alias lspconfig="nvim ~/.config/nvim/lua/configs/lspconfig.lua"
 alias lg="lazygit"
 alias ff="fastfetch"
-alias bat="batcat"
+if command -v batcat >/dev/null 2>&1; then
+  alias bat="batcat"
+fi
 
 # git
 alias gs="git status"
@@ -28,7 +32,9 @@ alias gsw="git switch"
 alias gcb="git checkout -b"
 
 # scripts 
-source ~/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+if [ -f "$HOME/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ]; then
+  source "$HOME/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+fi
 
 # custom functions
 function gpp {
@@ -58,16 +64,14 @@ function switch {
 }
 
 function condainit {
-  # # !! Contents within this block are managed by 'conda init' !!
-  __conda_setup="$('/Users/hexagon/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+  local conda_bin
+  conda_bin="${CONDA_EXE:-$(command -v conda 2>/dev/null || true)}"
+  if [ -z "$conda_bin" ]; then
+    return 0
+  fi
+  __conda_setup="$("$conda_bin" shell.zsh hook 2> /dev/null)"
   if [ $? -eq 0 ]; then
       eval "$__conda_setup"
-  else
-      if [ -f "/Users/hexagon/miniconda3/etc/profile.d/conda.sh" ]; then
-          . "/Users/hexagon/miniconda3/etc/profile.d/conda.sh"
-      else
-          export PATH="/Users/hexagon/miniconda3/bin:$PATH"
-      fi
   fi
   unset __conda_setup
   # <<< conda initialize <<<
@@ -82,5 +86,9 @@ function y {
 }
 
 # prompt
-eval "$(zoxide init zsh)"
-eval "$(starship init zsh)"
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi

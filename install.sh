@@ -1,97 +1,120 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+set -Eeuo pipefail
 
-SYSNAME=$(uname -s)
-PACKAGES="zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake tmux nodejs npm fastfetch bat yq"
+DOTFILES_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+OS="$(uname -s)"
+export PATH="$HOME/.local/bin:$PATH"
 
-sudo add-apt-repository ppa:zhangsongcui3371/fastfetch
-sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install -y $PACKAGES
+install_brew_packages() {
+  local packages=(zsh git curl fzf tmux wget tree htop ripgrep ncdu speedtest-cli make cmake node npm fastfetch bat yq neovim starship go lazygit zoxide btop)
+  local missing=()
+  local package
+  for package in "${packages[@]}"; do
+    brew list --formula "$package" >/dev/null 2>&1 || missing+=("$package")
+  done
+  if ((${#missing[@]})); then
+    brew install "${missing[@]}"
+  fi
+}
 
-# user binaries
-mkdir -p ~/.local/bin
-mkdir -p ~/.local/src
+install_apt_packages() {
+  local packages=(zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim)
+  if ! command -v fastfetch >/dev/null 2>&1; then
+    sudo add-apt-repository -y ppa:zhangsongcui3371/fastfetch
+  fi
+  sudo apt-get update
+  sudo apt-get install -y "${packages[@]}"
+}
 
-# neovim from source
-if command -v nvimbo >/dev/null 2>&1; then
-  echo "Neovim is installed."
-else
-  cd ~/.local/src
-  curl -LO https://github.com/neovim/neovim/releases/download/v0.11.2/nvim-linux-x86_64.tar.gz
-  sudo rm -rf ~/.local/bin/nvim
-  sudo tar -C ~/.local/bin -xzf nvim-linux-x86_64.tar.gz
-  sudo chown -R $USER ~/.local/bin
+install_lazygit_linux() {
+  if command -v lazygit >/dev/null 2>&1; then
+    return
+  fi
+
+  local version arch archive
+  version="$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest | sed -n 's/.*"tag_name": "v\([^"]*\)".*/\1/p' | head -n 1)"
+  case "$(uname -m)" in
+    x86_64) arch="x86_64" ;;
+    aarch64|arm64) arch="arm64" ;;
+    *) echo "Unsupported Linux architecture for lazygit: $(uname -m)" >&2; return 1 ;;
+  esac
+  archive="$HOME/.local/src/lazygit.tar.gz"
+  curl -fL -o "$archive" "https://github.com/jesseduffield/lazygit/releases/download/v${version}/lazygit_${version}_Linux_${arch}.tar.gz"
+  tar -xzf "$archive" -C "$HOME/.local/bin" lazygit
+}
+
+case "$OS" in
+  Darwin)
+    if ! command -v brew >/dev/null 2>&1; then
+      echo "Homebrew is required on macOS: https://brew.sh" >&2
+      exit 1
+    fi
+    install_brew_packages
+    ;;
+  Linux)
+    if ! command -v apt-get >/dev/null 2>&1; then
+      echo "This Linux installer requires apt-get (Ubuntu/Debian)." >&2
+      exit 1
+    fi
+    install_apt_packages
+    ;;
+  *)
+    echo "Unsupported operating system: $OS" >&2
+    exit 1
+    ;;
+esac
+
+mkdir -p "$HOME/.local/bin" "$HOME/.local/src" "$HOME/.zsh"
+
+ZSH_SYNTAX_DIR="$HOME/.zsh/fast-syntax-highlighting"
+if [ ! -f "$ZSH_SYNTAX_DIR/fast-syntax-highlighting.plugin.zsh" ]; then
+  if [ -d "$ZSH_SYNTAX_DIR/.git" ]; then
+    git -C "$ZSH_SYNTAX_DIR" pull --ff-only
+  else
+    git clone https://github.com/zdharma-continuum/fast-syntax-highlighting "$ZSH_SYNTAX_DIR"
+  fi
 fi
 
-# starship prompt
-if command -v starship >/dev/null 2>&1; then
-  echo "starship is installed."
-else
-  cd -
-  curl -sS https://starship.rs/install.sh | sh
+if ! command -v starship >/dev/null 2>&1; then
+  curl -sS https://starship.rs/install.sh | sh -s -- -y
 fi
-
-# zsh syntax highlighting
-ZSH_SYNTAX_FILE=~/.zsh/fast-syntax-highlighting.zsh
-if [ -f "$ZSH_SYNTAX_FILE" ]; then
-  echo "zsh syntax is installed"
-else
-  git clone https://github.com/zdharma-continuum/fast-syntax-highlighting $ZSH_SYNTAX_FILE 
-fi
-
-# fuzzy finder
-if command -v fzf >/dev/null 2>&1; then
-  echo "fzf is installed."
-else
-  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  ~/.fzf/install
-fi
-
-# go
-if command -v go >/dev/null 2>&1; then
-  echo "go is installed"
-else
-  wget -q -O - https://git.io/vQhTU | bash
-fi
-
-# lazygit
-LG=~/.local/src/lazygit
-if command -v lazygit >/dev/null 2>&1; then
-  echo "lazygit is installed."
-else
-  LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
-  curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-  tar xf lazygit.tar.gz lazygit
-  sudo install lazygit -D -t /usr/local/bin/
-fi
-
-# zoxide
-if command -v z >/dev/null 2>&1; then
-  echo "zoxide is installed."
-else
-  cd -
+if ! command -v zoxide >/dev/null 2>&1; then
   curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 fi
 
-# docker
-sudo apt-get update
-sudo apt-get install ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-sudo groupadd docker
-sudo usermod -aG docker $USER
-newgrp docker
+if [ "$OS" = Darwin ]; then
+  if ! command -v docker >/dev/null 2>&1; then
+    brew install --cask docker
+    echo "Docker Desktop was installed. Launch it once to start the Docker daemon."
+  fi
+else
+  install_lazygit_linux
+  if ! command -v docker >/dev/null 2>&1; then
+    sudo apt-get install -y ca-certificates
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+    . /etc/os-release
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu ${UBUNTU_CODENAME:-$VERSION_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+    sudo apt-get update
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  fi
+  if getent group docker >/dev/null 2>&1; then
+    sudo usermod -aG docker "$USER"
+  else
+    sudo groupadd docker
+    sudo usermod -aG docker "$USER"
+  fi
+fi
 
-# symlinks
-cd ~
-ln -s $(pwd)/dotfiles/home/.custom.sh $(pwd)/.custom.sh
-ln -s $(pwd)/dotfiles/home/.history.sh $(pwd)/.history.sh
-ln -s $(pwd)/dotfiles/home/.alacritty.toml $(pwd)/.alacritty.toml
-ln -s $(pwd)/dotfiles/home/.tmux.conf $(pwd)/.tmux.conf
-ln -s $(pwd)/dotfiles/home/all_red.theme $(pwd)/.config/bpytop/themes/all_red.theme
+mkdir -p "$HOME/.config/bpytop/themes"
+ln -sfn "$DOTFILES_DIR/home/.custom.sh" "$HOME/.custom.sh"
+ln -sfn "$DOTFILES_DIR/home/.history.sh" "$HOME/.history.sh"
+ln -sfn "$DOTFILES_DIR/home/.alacritty.toml" "$HOME/.alacritty.toml"
+ln -sfn "$DOTFILES_DIR/home/.tmux.conf" "$HOME/.tmux.conf"
+ln -sfn "$DOTFILES_DIR/home/all_red.theme" "$HOME/.config/bpytop/themes/all_red.theme"
+
+echo "Installed dotfiles from $DOTFILES_DIR for $OS."
+echo "Add these lines to ~/.zshrc if they are not already present:"
+echo '  source ~/.custom.sh'
+echo '  source ~/.history.sh'
