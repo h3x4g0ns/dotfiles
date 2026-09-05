@@ -18,12 +18,21 @@ install_brew_packages() {
 }
 
 install_apt_packages() {
-  local packages=(zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim)
+  local packages=(zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim alacritty)
   if ! command -v fastfetch >/dev/null 2>&1; then
     sudo add-apt-repository -y ppa:zhangsongcui3371/fastfetch
   fi
   sudo apt-get update
   sudo apt-get install -y "${packages[@]}"
+}
+
+install_alacritty_macos() {
+  if command -v alacritty >/dev/null 2>&1 || [ -d "/Applications/Alacritty.app" ]; then
+    return
+  fi
+  if ! brew install --cask alacritty; then
+    echo "Warning: Homebrew could not install Alacritty. The cask may be temporarily unavailable." >&2
+  fi
 }
 
 install_lazygit_linux() {
@@ -50,6 +59,7 @@ case "$OS" in
       exit 1
     fi
     install_brew_packages
+    install_alacritty_macos
     ;;
   Linux)
     if ! command -v apt-get >/dev/null 2>&1; then

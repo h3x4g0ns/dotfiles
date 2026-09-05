@@ -8,7 +8,7 @@ grep -qxF 'source ~/.history.sh' ~/.zshrc || echo 'source ~/.history.sh' >> ~/.z
 source ~/.zshrc
 ```
 
-The installer supports Ubuntu/Debian and macOS. macOS uses Homebrew; Docker Desktop is installed when Docker is missing and must be launched once.
+The installer supports Ubuntu/Debian and macOS. macOS uses Homebrew, including the Alacritty cask. Docker Desktop is installed when Docker is missing and must be launched once.
 
 ## v2
 
