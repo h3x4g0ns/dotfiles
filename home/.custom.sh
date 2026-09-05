@@ -35,6 +35,9 @@ alias gcb="git checkout -b"
 if [ -f "$HOME/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh" ]; then
   source "$HOME/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 fi
+if command -v fzf >/dev/null 2>&1 && fzf --zsh >/dev/null 2>&1; then
+  eval "$(fzf --zsh)"
+fi
 
 # custom functions
 function gpp {
