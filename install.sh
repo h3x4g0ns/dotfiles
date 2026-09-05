@@ -18,12 +18,33 @@ install_brew_packages() {
 }
 
 install_apt_packages() {
-  local packages=(zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim alacritty)
+  local packages=(zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim alacritty unzip fontconfig)
   if ! command -v fastfetch >/dev/null 2>&1; then
     sudo add-apt-repository -y ppa:zhangsongcui3371/fastfetch
   fi
   sudo apt-get update
   sudo apt-get install -y "${packages[@]}"
+}
+
+install_jetbrains_mono_macos() {
+  if brew list --cask font-jetbrains-mono-nerd-font >/dev/null 2>&1; then
+    return
+  fi
+  brew install --cask font-jetbrains-mono-nerd-font
+}
+
+install_jetbrains_mono_linux() {
+  local font_dir version archive
+  font_dir="$HOME/.local/share/fonts/JetBrainsMonoNerdFont"
+  if find "$font_dir" -type f \( -name '*.ttf' -o -name '*.otf' \) -print -quit 2>/dev/null | grep -q .; then
+    return
+  fi
+  version="$(curl -fsSL https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | sed -n 's/.*"tag_name": "v\([^"]*\)".*/\1/p' | head -n 1)"
+  archive="$HOME/.local/src/JetBrainsMono.zip"
+  mkdir -p "$font_dir"
+  curl -fL -o "$archive" "https://github.com/ryanoasis/nerd-fonts/releases/download/v${version}/JetBrainsMono.zip"
+  unzip -oq "$archive" -d "$font_dir"
+  fc-cache -f "$font_dir"
 }
 
 install_alacritty_macos() {
@@ -79,6 +100,7 @@ case "$OS" in
     fi
     install_brew_packages
     install_alacritty_macos
+    install_jetbrains_mono_macos
     ;;
   Linux)
     if ! command -v apt-get >/dev/null 2>&1; then
@@ -86,6 +108,7 @@ case "$OS" in
       exit 1
     fi
     install_apt_packages
+    install_jetbrains_mono_linux
     ;;
   *)
     echo "Unsupported operating system: $OS" >&2
