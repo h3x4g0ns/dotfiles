@@ -30,8 +30,27 @@ install_alacritty_macos() {
   if command -v alacritty >/dev/null 2>&1 || [ -d "/Applications/Alacritty.app" ]; then
     return
   fi
-  if ! brew install --cask alacritty; then
-    echo "Warning: Homebrew could not install Alacritty. The cask may be temporarily unavailable." >&2
+
+  if brew install --cask alacritty; then
+    return
+  fi
+
+  local version dmg_file mountpoint app_dir
+  version="$(curl -fsSL https://api.github.com/repos/alacritty/alacritty/releases/latest | sed -n 's/.*"tag_name": "v\([^"]*\)".*/\1/p' | head -n 1)"
+  dmg_file="$HOME/.local/src/Alacritty-v${version}.dmg"
+  mountpoint="$(mktemp -d -t alacritty-install)"
+  app_dir="$HOME/Applications"
+
+  echo "Homebrew's Alacritty cask is unavailable; installing the official release instead."
+  curl -fL -o "$dmg_file" "https://github.com/alacritty/alacritty/releases/download/v${version}/Alacritty-v${version}.dmg"
+  if hdiutil attach "$dmg_file" -nobrowse -readonly -mountpoint "$mountpoint"; then
+    mkdir -p "$app_dir"
+    ditto "$mountpoint/Alacritty.app" "$app_dir/Alacritty.app"
+    hdiutil detach "$mountpoint" >/dev/null
+    ln -sfn "$app_dir/Alacritty.app/Contents/MacOS/alacritty" "$HOME/.local/bin/alacritty"
+  else
+    rmdir "$mountpoint"
+    echo "Warning: could not mount the Alacritty release DMG." >&2
   fi
 }
 
