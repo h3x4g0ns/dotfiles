@@ -6,7 +6,7 @@ OS="$(uname -s)"
 export PATH="$HOME/.local/bin:$PATH"
 
 install_brew_packages() {
-  local packages=(zsh git curl fzf tmux wget tree htop ripgrep ncdu speedtest-cli make cmake node npm fastfetch bat yq neovim starship go lazygit zoxide btop)
+  local packages=(zsh git curl fzf tmux wget tree htop ripgrep ncdu speedtest-cli make cmake node npm fastfetch bat yq neovim starship go lazygit zoxide btop tailscale)
   local missing=()
   local package
   for package in "${packages[@]}"; do
@@ -24,6 +24,14 @@ install_apt_packages() {
   fi
   sudo apt-get update
   sudo apt-get install -y "${packages[@]}"
+}
+
+install_tailscale_linux() {
+  if command -v tailscale >/dev/null 2>&1; then
+    return
+  fi
+
+  curl -fsSL https://tailscale.com/install.sh | sh
 }
 
 install_rust_toolchain() {
@@ -118,6 +126,7 @@ case "$OS" in
       exit 1
     fi
     install_apt_packages
+    install_tailscale_linux
     install_jetbrains_mono_linux
     ;;
   *)
