@@ -1,5 +1,6 @@
 # globals 
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 if [ -d "$HOME/.local/bin/nvim-linux-x86_64/bin" ]; then
   export PATH="$HOME/.local/bin/nvim-linux-x86_64/bin:$PATH"
 fi

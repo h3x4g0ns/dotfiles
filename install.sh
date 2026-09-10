@@ -18,12 +18,22 @@ install_brew_packages() {
 }
 
 install_apt_packages() {
-  local packages=(zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim alacritty unzip fontconfig)
+  local packages=(zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim alacritty unzip fontconfig golang-go)
   if ! command -v fastfetch >/dev/null 2>&1; then
     sudo add-apt-repository -y ppa:zhangsongcui3371/fastfetch
   fi
   sudo apt-get update
   sudo apt-get install -y "${packages[@]}"
+}
+
+install_rust_toolchain() {
+  if command -v rustup >/dev/null 2>&1; then
+    rustup toolchain install stable
+    rustup default stable
+    return
+  fi
+
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --default-toolchain stable
 }
 
 install_jetbrains_mono_macos() {
@@ -117,6 +127,8 @@ case "$OS" in
 esac
 
 mkdir -p "$HOME/.local/bin" "$HOME/.local/src" "$HOME/.zsh"
+
+install_rust_toolchain
 
 ZSH_SYNTAX_DIR="$HOME/.zsh/fast-syntax-highlighting"
 if [ ! -f "$ZSH_SYNTAX_DIR/fast-syntax-highlighting.plugin.zsh" ]; then
