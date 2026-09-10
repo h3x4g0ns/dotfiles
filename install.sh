@@ -6,7 +6,7 @@ OS="$(uname -s)"
 export PATH="$HOME/.local/bin:$PATH"
 
 install_brew_packages() {
-  local packages=(zsh git curl fzf tmux wget tree htop ripgrep ncdu speedtest-cli make cmake node npm fastfetch bat yq neovim starship go lazygit zoxide btop tailscale)
+  local packages=(zsh git curl fzf tmux wget tree htop ripgrep ncdu speedtest-cli make cmake node npm fastfetch bat yq neovim starship go lazygit zoxide btop tailscale macmon)
   local missing=()
   local package
   for package in "${packages[@]}"; do
