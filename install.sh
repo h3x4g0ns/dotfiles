@@ -18,7 +18,7 @@ install_brew_packages() {
 }
 
 install_apt_packages() {
-  local packages=(zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim alacritty unzip fontconfig golang-go)
+  local packages=(zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim alacritty unzip fontconfig golang-go vlc)
   if ! command -v fastfetch >/dev/null 2>&1; then
     sudo add-apt-repository -y ppa:zhangsongcui3371/fastfetch
   fi
@@ -49,6 +49,13 @@ install_jetbrains_mono_macos() {
     return
   fi
   brew install --cask font-jetbrains-mono-nerd-font
+}
+
+install_vlc_macos() {
+  if brew list --cask vlc >/dev/null 2>&1; then
+    return
+  fi
+  brew install --cask vlc
 }
 
 install_jetbrains_mono_linux() {
@@ -119,6 +126,7 @@ case "$OS" in
     install_brew_packages
     install_alacritty_macos
     install_jetbrains_mono_macos
+    install_vlc_macos
     ;;
   Linux)
     if ! command -v apt-get >/dev/null 2>&1; then
