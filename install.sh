@@ -18,9 +18,12 @@ install_brew_packages() {
 }
 
 install_apt_packages() {
-  local packages=(zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim alacritty unzip fontconfig golang-go vlc)
+  local packages=(zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim alacritty unzip fontconfig golang-go vlc cryptomator)
   if ! command -v fastfetch >/dev/null 2>&1; then
     sudo add-apt-repository -y ppa:zhangsongcui3371/fastfetch
+  fi
+  if ! command -v cryptomator >/dev/null 2>&1; then
+    sudo add-apt-repository -y ppa:sebastian-stenzel/cryptomator
   fi
   sudo apt-get update
   sudo apt-get install -y "${packages[@]}"
@@ -56,6 +59,13 @@ install_vlc_macos() {
     return
   fi
   brew install --cask vlc
+}
+
+install_cryptomator_macos() {
+  if brew list --cask cryptomator >/dev/null 2>&1; then
+    return
+  fi
+  brew install --cask cryptomator
 }
 
 install_jetbrains_mono_linux() {
@@ -127,6 +137,7 @@ case "$OS" in
     install_alacritty_macos
     install_jetbrains_mono_macos
     install_vlc_macos
+    install_cryptomator_macos
     ;;
   Linux)
     if ! command -v apt-get >/dev/null 2>&1; then
