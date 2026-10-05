@@ -6,7 +6,7 @@ OS="$(uname -s)"
 export PATH="$HOME/.local/bin:$PATH"
 
 install_brew_packages() {
-  local packages=(zsh git curl fzf tmux wget tree htop ripgrep ncdu speedtest-cli make cmake node npm fastfetch bat yq neovim starship go lazygit zoxide btop tailscale macmon)
+  local packages=(zsh git gh curl fzf tmux wget tree htop ripgrep ncdu speedtest-cli make cmake node npm fastfetch bat yq neovim starship go lazygit zoxide btop tailscale macmon)
   local missing=()
   local package
   for package in "${packages[@]}"; do
@@ -18,7 +18,7 @@ install_brew_packages() {
 }
 
 install_apt_packages() {
-  local packages=(zsh git curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim alacritty unzip fontconfig golang-go vlc cryptomator)
+  local packages=(zsh git gh curl nvtop bpytop tmux wget tree htop ripgrep ncdu speedtest-cli make cmake nodejs npm fastfetch bat yq neovim alacritty unzip fontconfig golang-go vlc cryptomator)
   if ! command -v fastfetch >/dev/null 2>&1; then
     sudo add-apt-repository -y ppa:zhangsongcui3371/fastfetch
   fi
